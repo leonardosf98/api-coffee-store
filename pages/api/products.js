@@ -47,3 +47,5 @@ function products(request, response) {
     ]),
   ];
 }
+
+export default products;
