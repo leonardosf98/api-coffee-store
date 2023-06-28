@@ -102,11 +102,14 @@ export default function Home() {
       </header>
       <div className={styles.productsContainer}>
         {products.map((item) => (
-          <div className={`${styles.product} product-${item.id}`}>
-            <img src={`${item.image}`} alt={`${item.name}`} width="100px" />
+          <div
+            key="(item.id)"
+            className={`${styles.product} product-${item.id}`}
+          >
+            <img src={`${item.image}`} alt={`{item.name}`} width="100px" />
             <h3>{item.name}</h3>
 
-            <p className={styles.description}>{item.description}</p>
+            <p className={styles.description}>${item.description}</p>
 
             <h4>R${item.price}</h4>
 
