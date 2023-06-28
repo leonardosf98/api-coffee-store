@@ -106,7 +106,7 @@ export default function Home() {
             <img src={`${item.image}`} alt={`${item.name}`} width="100px" />
             <h3>{item.name}</h3>
 
-            <p className={styles.description}>${item.description}</p>
+            <p className={styles.description}>{item.description}</p>
 
             <h4>R${item.price}</h4>
 
