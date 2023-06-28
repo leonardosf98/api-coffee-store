@@ -1,95 +1,139 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import Image from "next/image";
+import styles from "./page.module.css";
+import { useState } from "react";
+
+/*
+const showProducts = async () => {
+  const products = document.querySelectorAll(".products-container");
+  const itens = await fetchProduct();
+
+  itens.map((item) => {
+    const product = document.createElement("div");
+    product.classList.add(`product`);
+    product.classList.add(`product-${item.id}`);
+    product.innerHTML = `
+    
+      <img src="${item.image}" alt="${item.name}" width="100px">
+      <h3>${item.name}</h3>
+      
+      <p class="description">${item.description}</p>
+      
+      <h4>R$ ${item.price}</h4>
+      
+      <button class="add-to-cart">Adicionar ao carrinho</button>
+      
+    `;
+    products[0].appendChild(product);
+  });
+};
+
+async function fetchProduct() {
+  const productsURL = "https://api-coffee-store.vercel.app/api/products";
+  const response = await fetch(productsURL);
+
+  return await response.json();
+}
+showProducts();
+
+function addProductToCart() {}
+*/
+const initialProducts = [
+  {
+    id: 1,
+    name: "Capuccino",
+    price: 10,
+    image:
+      "https://tb4371.vtexassets.com/arquivos/ids/155488/FOTOS_REDIMENSIONADAS_CAPPUCCINO--1-.jpg?v=637777057839830000",
+    description:
+      "Café espresso com leite vaporizado e espuma de leite em proporções iguais",
+  },
+  {
+    id: 2,
+    name: "Flat White",
+    price: 12,
+    image:
+      "https://tb4371.vtexassets.com/arquivos/ids/155488/FOTOS_REDIMENSIONADAS_CAPPUCCINO--1-.jpg?v=637777057839830000",
+    description: "Duplo espresso com leite vaporizado e pouca espuma de leite",
+  },
+  {
+    id: 3,
+    name: "Latte",
+    price: 11,
+    image:
+      "https://tb4371.vtexassets.com/arquivos/ids/155488/FOTOS_REDIMENSIONADAS_CAPPUCCINO--1-.jpg?v=637777057839830000",
+    description:
+      "Café espresso com leite vaporizado e espuma de leite em proporções iguais",
+  },
+  {
+    id: 4,
+    name: "Espresso",
+    price: 6,
+    image:
+      "https://tb4371.vtexassets.com/arquivos/ids/155488/FOTOS_REDIMENSIONADAS_CAPPUCCINO--1-.jpg?v=637777057839830000",
+    description: "Uma dose de café espresso",
+  },
+  {
+    id: 5,
+    name: "Duplo espresso",
+    price: 10,
+    image:
+      "https://tb4371.vtexassets.com/arquivos/ids/155488/FOTOS_REDIMENSIONADAS_CAPPUCCINO--1-.jpg?v=637777057839830000",
+    description: "Café espresso em dose dupla",
+  },
+];
 
 export default function Home() {
+  const [products, setProducts] = useState(initialProducts);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <main className={styles.page}>
+      <header className={styles.header}>
+        <a className={styles.containerLink} href="/index.html">
+          <Image
+            width={50}
+            height={50}
+            className={styles.headerImage}
+            src="/caneca.png"
+            alt="imagem de caneca marrom"
+          />
+          <h1 className={styles.brandTitle}>blue ninja coffee shop</h1>
+        </a>
+      </header>
+      <div className={styles.productsContainer}>
+        {products.map((item) => (
+          <div className={`${styles.product} product-${item.id}`}>
+            <img src={`${item.image}`} alt={`${item.name}`} width="100px" />
+            <h3>{item.name}</h3>
+
+            <p className={styles.description}>${item.description}</p>
+
+            <h4>R${item.price}</h4>
+
+            <button className={styles.addToCart}>Adicionar ao carrinho</button>
+          </div>
+        ))}
+
+        {/*
+            const product = document.createElement("div");
+            product.classList.add(`product`);
+            product.classList.add(`product-${item.id}`);
+            product.innerHTML = `
+            
+              <img src="${item.image}" alt="${item.name}" width="100px">
+              <h3>${item.name}</h3>
+              
+              <p class="description">${item.description}</p>
+              
+              <h4>R$ ${item.price}</h4>
+              
+              <button class="add-to-cart">Adicionar ao carrinho</button>
+              
+            `;
+            products[0].appendChild(product);
+          */}
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <div className={styles.cart}></div>
     </main>
-  )
+  );
 }
