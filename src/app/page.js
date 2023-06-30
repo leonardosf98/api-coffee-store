@@ -1,33 +1,9 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 /*
-const showProducts = async () => {
-  const products = document.querySelectorAll(".products-container");
-  const itens = await fetchProduct();
-
-  itens.map((item) => {
-    const product = document.createElement("div");
-    product.classList.add(`product`);
-    product.classList.add(`product-${item.id}`);
-    product.innerHTML = `
-    
-      <img src="${item.image}" alt="${item.name}" width="100px">
-      <h3>${item.name}</h3>
-      
-      <p class="description">${item.description}</p>
-      
-      <h4>R$ ${item.price}</h4>
-      
-      <button class="add-to-cart">Adicionar ao carrinho</button>
-      
-    `;
-    products[0].appendChild(product);
-  });
-};
-
 async function fetchProduct() {
   const productsURL = "https://api-coffee-store.vercel.app/api/products";
   const response = await fetch(productsURL);
@@ -38,6 +14,7 @@ showProducts();
 
 function addProductToCart() {}
 */
+
 const initialProducts = [
   {
     id: 1,
@@ -85,6 +62,21 @@ const initialProducts = [
 
 export default function Home() {
   const [products, setProducts] = useState(initialProducts);
+  const [cart, setCart] = useState([]);
+  const itemQuantities = cart.length;
+  const subtotal = calculateSubtotal(cart).toFixed(2);
+
+  function calculateSubtotal(cartProducts) {
+    let sum = 0;
+    for (let i = 0; i < cartProducts.length; i++) {
+      let result = products.find(
+        (product) => product.id === cartProducts[i].id
+      );
+      sum += result.price * cartProducts[i].quantity;
+    }
+
+    return sum;
+  }
 
   return (
     <main className={styles.page}>
@@ -100,43 +92,54 @@ export default function Home() {
           <h1 className={styles.brandTitle}>blue ninja coffee shop</h1>
         </a>
       </header>
-      <div className={styles.productsContainer}>
-        {products.map((item) => (
-          <div
-            key="(item.id)"
-            className={`${styles.product} product-${item.id}`}
-          >
-            <img src={`${item.image}`} alt={`{item.name}`} width="100px" />
-            <h3>{item.name}</h3>
+      <div className={styles.container}>
+        <div className={styles.productsContainer}>
+          {products.map((item) => (
+            <div
+              key={item.id}
+              className={`${styles.product} product-${item.id}`}
+            >
+              <img src={`${item.image}`} alt={`${item.name}`} width="100px" />
+              <h3>{item.name}</h3>
 
-            <p className={styles.description}>${item.description}</p>
+              <p className={styles.description}>{item.description}</p>
 
-            <h4>R${item.price}</h4>
+              <h4>R${item.price}</h4>
 
-            <button className={styles.addToCart}>Adicionar ao carrinho</button>
-          </div>
-        ))}
+              <button
+                onClick={() => {
+                  setCart((oldState) => {
+                    if (oldState.length === 0) {
+                      return [{ id: item.id, quantity: 1 }];
+                    }
 
-        {/*
-            const product = document.createElement("div");
-            product.classList.add(`product`);
-            product.classList.add(`product-${item.id}`);
-            product.innerHTML = `
-            
-              <img src="${item.image}" alt="${item.name}" width="100px">
-              <h3>${item.name}</h3>
-              
-              <p class="description">${item.description}</p>
-              
-              <h4>R$ ${item.price}</h4>
-              
-              <button class="add-to-cart">Adicionar ao carrinho</button>
-              
-            `;
-            products[0].appendChild(product);
-          */}
+                    for (let i = 0; i < oldState.length; i++) {
+                      console.log({ oldStateID: oldState.id, itemID: item.id });
+                      if (oldState[i].id === item.id) {
+                        console.log("existe");
+                        oldState[i].quantity++;
+                        return [...oldState];
+                      } else {
+                        console.log("n existe");
+                        return [...oldState, { id: item.id, quantity: 1 }];
+                      }
+                    }
+                  });
+                }}
+                className={styles.addToCart}
+              >
+                Adicionar ao carrinho
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className={styles.cart}></div>
+      <section className={styles.cartContainer}>
+        <div className={styles.cart}>
+          <span>{itemQuantities}</span> <span>Ver itens</span>
+          <span>R$ {subtotal}</span>
+        </div>
+      </section>
     </main>
   );
 }
